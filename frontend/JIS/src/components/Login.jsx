@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -13,10 +21,29 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submitted:", formData);
-    // Integrate login API here
+
+    try {
+      const res = await axios.post(BASE_URL + "/login", formData, {
+        withCredentials: true, // Send cookie
+      });
+
+      dispatch(addUser(res.data));
+      const { role } = res.data;
+
+      // Navigate based on role
+      if (role === "registrar") navigate("/registrar");
+      else if (role === "judge") navigate("/judge");
+      else if (role === "lawyer") navigate("/lawyer");
+      else console.error("Unknown role");
+    } catch (err) {
+      console.error(
+        "Login failed:",
+        err.response?.data?.message || err.message
+      );
+      alert("Login failed. Check your credentials.");
+    }
   };
 
   return (
