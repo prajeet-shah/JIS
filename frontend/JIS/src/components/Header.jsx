@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
+import { Link } from "react-router";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,7 +33,9 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-md p-4 flex items-center justify-between">
       {/* App Name */}
-      <div className="text-xl font-bold">Judiciary Info System</div>
+      <Link to={user ? `/${user?.role}` : "/login"}>
+        <div className="text-xl font-bold">Judiciary Info System</div>
+      </Link>
 
       {/* Profile Dropdown */}
       {user && (

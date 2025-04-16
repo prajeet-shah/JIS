@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
+import RegisterCase from "./components/RegisterCase";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/judge" element={<Judge />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/registrar/register-case" element={<RegisterCase />} />
           </Route>
         </Routes>
       </BrowserRouter>
