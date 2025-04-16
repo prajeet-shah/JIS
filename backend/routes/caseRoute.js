@@ -1,6 +1,7 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const Case = require("../models/Case");
+const User = require("../models/User");
 const generateCIN = require("../utils/generateCIN");
 const { AuthUser } = require("../middlewares/Auth"); // use your AuthUser
 
@@ -93,6 +94,32 @@ caseRouter.post(
   }
 );
 
+caseRouter.patch("/viewed-case", AuthUser, async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    if (!user || (user.role !== "lawyer" && user.role !== "judge")) {
+      return res
+        .status(403)
+        .json({ message: "Only lawyers or judges can view cases." });
+    }
+
+    user.viewedCases = (user.viewedCases || 0) + 1;
+    await user.save();
+
+    res.status(200).json({
+      message: "Viewed case recorded.",
+      totalViewed: user.viewedCases,
+    });
+  } catch (err) {
+    console.error("Error updating viewedCases:", err.message);
+    res
+      .status(500)
+      .json({ message: "Server error while updating viewedCases." });
+  }
+});
 // pending cases
 caseRouter.get("/pending", AuthUser, async (req, res) => {
   try {
@@ -136,13 +163,9 @@ caseRouter.get("/status/:cin", AuthUser, async (req, res) => {
       return res.status(404).json({ message: "Case not found" });
     }
 
-    res.json({
-      cin: courtCase.cin,
-      status: courtCase.status,
-      defendantName: courtCase.defendantName,
-      hearingDates: courtCase.hearingDates,
-    });
+    res.json(courtCase); // ✅ return the full case details
   } catch (err) {
+    console.error("Error fetching case:", err.message);
     res.status(500).json({ message: err.message });
   }
 });

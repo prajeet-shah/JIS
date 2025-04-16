@@ -43,6 +43,7 @@ authRouter.post("/signup", async (req, res) => {
         message: "User registered successfully",
         role: newUser.role,
         name: newUser.name,
+        viewedCases: newUser.viewedCases,
       });
   } catch (err) {
     console.error("Signup error:", err);
@@ -84,6 +85,7 @@ authRouter.post("/login", async (req, res) => {
         message: "Login successful",
         role: user.role,
         name: user.name,
+        viewedCases: user.viewedCases,
       });
   } catch (err) {
     console.error("Login error:", err);
