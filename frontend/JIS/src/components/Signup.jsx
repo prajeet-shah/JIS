@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice"; // Update the path if different
+import { BASE_URL } from "../utils/constants"; // Your API base URL
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +13,9 @@ const Signup = () => {
     role: "judge",
   });
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -16,10 +23,30 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup form submitted:", formData);
-    // You can send this data to your backend here
+
+    try {
+      const res = await axios.post(`${BASE_URL}/signup`, formData, {
+        withCredentials: true,
+      });
+
+      const userData = res.data;
+      dispatch(addUser(userData));
+
+      // Navigate based on role
+      const role = userData.role;
+      if (role === "registrar") navigate("/registrar");
+      else if (role === "judge") navigate("/judge");
+      else if (role === "lawyer") navigate("/lawyer");
+      else console.error("Unknown role");
+    } catch (err) {
+      console.error(
+        "Signup failed:",
+        err.response?.data?.message || err.message
+      );
+      alert("Signup failed. Try again.");
+    }
   };
 
   return (
@@ -85,7 +112,15 @@ const Signup = () => {
           >
             Sign Up
           </button>
-          <p>Already have an account? <Link to={"/login"} > <b><u>click here</u></b></Link></p>
+          <p className="text-sm text-center mt-3 text-gray-700">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-indigo-600 font-semibold hover:underline"
+            >
+              <u>Click here</u>
+            </Link>
+          </p>
         </form>
       </div>
     </div>

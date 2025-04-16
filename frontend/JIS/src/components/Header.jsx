@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
+
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -19,6 +20,7 @@ const Header = () => {
         {},
         { withCredentials: true }
       );
+
       console.log(res.data);
       dispatch(removeUser());
       navigate("/login");
