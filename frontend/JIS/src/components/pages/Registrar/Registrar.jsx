@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CaseTable from "./CaseTable";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL } from "../../../utils/constants";
 import { useNavigate } from "react-router";
 
 const Registrar = () => {

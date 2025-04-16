@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL } from "../../../utils/constants";
 
 const CaseActionsModal = ({ cin, type, onClose, refresh }) => {
   const [input, setInput] = useState("");

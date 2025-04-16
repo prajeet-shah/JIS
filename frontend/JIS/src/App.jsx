@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import Header from "./components/Header";
-import Judge from "./components/Judge";
-import Lawyer from "./components/Lawyer";
-import Registrar from "./components/Registrar";
+
+import Judge from "./components/pages/Judge/Judge";
+import Lawyer from "./components/pages/Lawyer/Lawyer";
+import Registrar from "./components/pages/Registrar/Registrar";
 import Body from "./components/Body";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
-import RegisterCase from "./components/RegisterCase";
+import RegisterCase from "./components/pages/Registrar/RegisterCase";
+import CaseDetails from "./components/pages/Lawyer/CaseDetails";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/registrar/register-case" element={<RegisterCase />} />
+            <Route path="/lawyer/case/:cin" element={<CaseDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
