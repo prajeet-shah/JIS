@@ -9,9 +9,19 @@ const profileRouter = require("./routes/profileRoute");
 const caseRouter = require("./routes/caseRoute");
 
 const app = express();
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [
+  "https://jis-sj13.vercel.app",
+];
+//const allowedOrigins = "http://localhost:5173";
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend URL
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
