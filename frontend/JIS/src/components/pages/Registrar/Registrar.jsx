@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 const Registrar = () => {
   const [cases, setCases] = useState([]);
+  const [filteredCases, setFilteredCases] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -18,6 +19,7 @@ const Registrar = () => {
         withCredentials: true,
       });
       setCases(res.data);
+      setFilteredCases(res.data);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching pending cases", err);
@@ -25,23 +27,23 @@ const Registrar = () => {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const res = await axios.get(
-        `${BASE_URL}/api/cases/search?keyword=${search}`,
-        {
-          withCredentials: true,
-        }
-      );
-      setCases(res.data);
-    } catch (err) {
-      console.error("Search error:", err);
-    }
+  const handleSearch = () => {
+    const result = cases.filter((c) =>
+      c.cin.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredCases(result);
   };
 
   useEffect(() => {
     fetchPendingCases();
   }, []);
+
+  // 🔁 Reset to all cases when search is cleared
+  useEffect(() => {
+    if (search.trim() === "") {
+      setFilteredCases(cases);
+    }
+  }, [search, cases]);
 
   return (
     <div className="p-4">
@@ -53,7 +55,7 @@ const Registrar = () => {
         <input
           type="text"
           className="border p-2 rounded w-full sm:w-80"
-          placeholder="Search resolved cases (keyword)..."
+          placeholder="Search pending cases by CIN number..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -63,19 +65,12 @@ const Registrar = () => {
         >
           Search
         </button>
-
-        <button
-          onClick={() => navigate("/registrar/register-case")}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4"
-        >
-          Register New case
-        </button>
       </div>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <CaseTable cases={cases} refresh={fetchPendingCases} />
+        <CaseTable cases={filteredCases} refresh={fetchPendingCases} />
       )}
     </div>
   );
