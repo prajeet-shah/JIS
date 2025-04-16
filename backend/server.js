@@ -8,7 +8,12 @@ const authRouter = require("./routes/authRoute");
 const profileRouter = require("./routes/profileRoute");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
