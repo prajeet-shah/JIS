@@ -11,6 +11,7 @@ import appStore from "./utils/appStore";
 import RegisterCase from "./components/pages/Registrar/RegisterCase";
 import CaseDetails from "./components/pages/Lawyer/CaseDetails";
 import ClosedCase from "./components/pages/Registrar/ClosedCase";
+import RunningCases from "./components/pages/Registrar/RunningCases";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/registrar/register-case" element={<RegisterCase />} />
             <Route path="/registrar/closed-case" element={<ClosedCase />} />
+            <Route path="/registrar/running-case" element={<RunningCases />} />
             <Route path="/lawyer/case/:cin" element={<CaseDetails />} />
             <Route path="/judge/case/:cin" element={<CaseDetails />} />
             <Route path="/registrar/case/:cin" element={<CaseDetails />} />

@@ -63,6 +63,9 @@ const Header = () => {
             <Link to="/registrar/register-case">
               <li className="mx-5 px-5">Register New Case</li>
             </Link>
+            <Link to="/registrar/running-case">
+              <li className="mx-5 px-5">View Running cases</li>
+            </Link>
             <Link to="/registrar/closed-case">
               <li>View Closed Case</li>
             </Link>
