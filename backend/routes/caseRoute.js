@@ -129,6 +129,14 @@ caseRouter.get("/pending", AuthUser, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+caseRouter.get("/due", AuthUser, async (req, res) => {
+  try {
+    const cases = await Case.find({ status: "Due" }).sort({ cin: 1 });
+    res.json(cases);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 caseRouter.get("/resolved", AuthUser, async (req, res) => {
   try {
