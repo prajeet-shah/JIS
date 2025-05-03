@@ -103,10 +103,10 @@ const Header = () => {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-4 mt-10 top-[1px] w-48 bg-white text-gray-800 rounded-md shadow-lg z-50">
-              <ul className="py-2">
+            <div className="absolute right-3 mt-10 md:top-[18px] top-[8px] md:w-28 w-20 bg-white text-gray-800 rounded-md shadow-lg z-50">
+              <ul className="py-1">
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  className="md:px-6 px-3 md:font-bold font-semibold md:text-lg text-sm hover:bg-gray-100 cursor-pointer"
                   onClick={handleLogout}
                 >
                   Logout
